@@ -30,12 +30,14 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
+import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
@@ -155,7 +157,7 @@ public class ReceiptPrintService {
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
-			if (transaction != null && transaction.isCard()) {
+			if(transaction!=null && transaction.isCard()) {
 				CardReader cardReader = CardReader.fromString(transaction.getCardReader());
 				
 				if (cardReader == CardReader.EXTERNAL_TERMINAL) {
@@ -174,9 +176,10 @@ public class ReceiptPrintService {
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
-			}
-			else {
-				map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+			}else{
+				
+				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
@@ -218,12 +221,14 @@ public class ReceiptPrintService {
 				}
 			}
 			else {
-				map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
+				
 			}
 
 		} catch (Exception e) {
@@ -304,7 +309,25 @@ public class ReceiptPrintService {
 			map.put("serviceChargeText", POSConstants.RECEIPT_REPORT_SERVICE_CHARGE_LABEL + currencySymbol);
 			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol);
 			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol);
-			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
+
+			PosTransactionDAO posTransactionDao = new PosTransactionDAO();
+			List<PosTransaction> posTransactionData = posTransactionDao.getPaymentTypeForTicketId(null,ticket);
+			System.out.println("posTransactionData : "+posTransactionData);
+			String paymentType = null;
+			if(posTransactionData!=null && posTransactionData.size()>=1)
+					paymentType = posTransactionData.get(0).getPaymentType();
+			System.out.println("PaymentType : "+paymentType);
+			if(paymentType!=null){
+				if(paymentType.equalsIgnoreCase(PaymentType.CASH.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+				else
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCARD_LABEL + currencySymbol);
+			}else{
+				
+				map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
+				
+			}
+				
 			map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + currencySymbol);
 			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol);
 
@@ -316,6 +339,7 @@ public class ReceiptPrintService {
 			map.put("copyType", printProperties.getReceiptCopyType());
 
 			if (transaction != null) {
+				System.out.println("Transaction");
 				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
 				if (changedAmount < 0) {
 					changedAmount = 0;
@@ -348,18 +372,10 @@ public class ReceiptPrintService {
 						map.put("approvalCode", string);
 					}
 				}else{
-					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+					if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
+						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
 					map.put("cardPayment",false);
 				}
-			}else{
-				Boolean isCardPayment = (Boolean)map.get("cardPayment");
-				if(isCardPayment!=null){
-					if(isCardPayment)
-						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCARD_LABEL + currencySymbol);
-					else
-						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
-				}else
-					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
 			}
 
 			String messageString = "<html>";

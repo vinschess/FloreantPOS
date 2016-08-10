@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.util.TransactionSummary;
@@ -110,6 +111,24 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			summary.setTipsAmount(HibernateProjectionsUtil.getDouble(o, index++));
 			
 			return summary;
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public List<PosTransaction> getPaymentTypeForTicketId(Terminal terminal, Ticket ticket) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			
+			Criteria criteria = session.createCriteria(com.floreantpos.model.PosTransaction.class);
+			criteria.add(Restrictions.eq(PosTransaction.PROP_TICKET,ticket));
+			if(terminal != null) {
+				criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
+			}
+			
+			return criteria.list();
 		} finally {
 			closeSession(session);
 		}
