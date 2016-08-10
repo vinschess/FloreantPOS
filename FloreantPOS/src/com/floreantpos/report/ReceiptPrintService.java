@@ -312,11 +312,9 @@ public class ReceiptPrintService {
 
 			PosTransactionDAO posTransactionDao = new PosTransactionDAO();
 			List<PosTransaction> posTransactionData = posTransactionDao.getPaymentTypeForTicketId(null,ticket);
-			System.out.println("posTransactionData : "+posTransactionData);
 			String paymentType = null;
 			if(posTransactionData!=null && posTransactionData.size()>=1)
 					paymentType = posTransactionData.get(0).getPaymentType();
-			System.out.println("PaymentType : "+paymentType);
 			if(paymentType!=null){
 				if(paymentType.equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
@@ -339,7 +337,6 @@ public class ReceiptPrintService {
 			map.put("copyType", printProperties.getReceiptCopyType());
 
 			if (transaction != null) {
-				System.out.println("Transaction");
 				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
 				if (changedAmount < 0) {
 					changedAmount = 0;
