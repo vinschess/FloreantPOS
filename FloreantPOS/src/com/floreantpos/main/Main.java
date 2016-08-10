@@ -1,0 +1,55 @@
+package com.floreantpos.main;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
+
+public class Main {
+
+	private static final String DEVELOPMENT_MODE = "developmentMode";
+
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args) throws Exception {
+		Options options = new Options();
+		options.addOption(DEVELOPMENT_MODE, true, "State if this is developmentMode");
+		CommandLineParser parser = new BasicParser();
+		CommandLine commandLine = parser.parse(options, args);
+		String optionValue = commandLine.getOptionValue(DEVELOPMENT_MODE);
+
+		Application application = Application.getInstance();
+
+		if (optionValue != null) {
+			application.setDevelopmentMode(Boolean.valueOf(optionValue));
+		}
+
+		application.start();
+	}
+
+	public static void restart() throws IOException, InterruptedException, URISyntaxException {
+		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+		  final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+		  /* is it a jar file? */
+		  if(!currentJar.getName().endsWith(".jar"))
+		    return;
+
+		  /* Build command: java -jar application.jar */
+		  final ArrayList<String> command = new ArrayList<String>();
+		  command.add(javaBin);
+		  command.add("-jar");
+		  command.add(currentJar.getPath());
+
+		  final ProcessBuilder builder = new ProcessBuilder(command);
+		  builder.start();
+		  System.exit(0);
+	}
+}
