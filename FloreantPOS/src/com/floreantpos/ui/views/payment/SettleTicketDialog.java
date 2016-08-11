@@ -24,12 +24,16 @@ import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.AllCardTransaction;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.DeliveryHeroTransaction;
+import com.floreantpos.model.EatNowTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.MenuLogTransaction;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
@@ -247,7 +251,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					settleTicket(transaction);
 					break;
 
-				case CREDIT_VISA:
+				/*case CREDIT_VISA:
 				case CREDIT_MASTER_CARD:
 				case CREDIT_AMEX:
 				case CREDIT_DISCOVERY:
@@ -289,6 +293,62 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					transaction.setGiftCertFaceValue(giftCertFaceValue);
 					transaction.setGiftCertPaidAmount(transaction.getAmount());
 					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
+
+					settleTicket(transaction);
+					break;*/
+					
+				case CARD:
+					if(!confirmPayment()) {
+						return;
+					}
+
+					transaction = new AllCardTransaction();
+					transaction.setPaymentType(paymentType.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+					
+				case MENULOG:
+					if(!confirmPayment()) {
+						return;
+					}
+
+					transaction = new MenuLogTransaction();
+					transaction.setPaymentType(paymentType.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+					
+				case EATNOW:
+					if(!confirmPayment()) {
+						return;
+					}
+
+					transaction = new EatNowTransaction();
+					transaction.setPaymentType(paymentType.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+					
+				case DELIVERY_HERO:
+					if(!confirmPayment()) {
+						return;
+					}
+
+					transaction = new DeliveryHeroTransaction();
+					transaction.setPaymentType(paymentType.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
 
 					settleTicket(transaction);
 					break;

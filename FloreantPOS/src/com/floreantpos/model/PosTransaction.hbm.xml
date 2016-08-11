@@ -78,6 +78,22 @@
 		<subclass discriminator-value="CREDIT_CARD" name="com.floreantpos.model.CreditCardTransaction">
 
 		</subclass>
+		
+		<subclass discriminator-value="CARD" name="com.floreantpos.model.AllCardTransaction">
+
+		</subclass>
+		
+		<subclass discriminator-value="MENULOG" name="com.floreantpos.model.MenuLogTransaction">
+
+		</subclass>
+		
+		<subclass discriminator-value="EATNOW" name="com.floreantpos.model.EatNowTransaction">
+
+		</subclass>
+		
+		<subclass discriminator-value="DELIVERYHERO" name="com.floreantpos.model.DeliveryHeroTransaction">
+
+		</subclass>
 
 		<subclass discriminator-value="DEBIT_CARD" name="com.floreantpos.model.DebitCardTransaction">
 		</subclass>

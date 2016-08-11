@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -180,6 +179,10 @@ public class ReceiptPrintService {
 				
 				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
+						transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
+						transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
@@ -223,6 +226,10 @@ public class ReceiptPrintService {
 			else {
 				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
+						transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
+						transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
@@ -318,8 +325,12 @@ public class ReceiptPrintService {
 			if(paymentType!=null){
 				if(paymentType.equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
-				else
+				else if(paymentType.equalsIgnoreCase(PaymentType.CARD.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCARD_LABEL + currencySymbol);
+				else if(paymentType.equalsIgnoreCase(PaymentType.MENULOG.name()) ||
+						paymentType.equalsIgnoreCase(PaymentType.EATNOW.name()) ||
+						paymentType.equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
 			}else{
 				
 				map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
@@ -371,6 +382,10 @@ public class ReceiptPrintService {
 				}else{
 					if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
+					else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
+							transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
+							transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
 					map.put("cardPayment",false);
 				}
 			}

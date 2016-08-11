@@ -3,10 +3,12 @@ package com.floreantpos.model;
 import com.floreantpos.config.CardConfig;
 
 public enum PaymentType {
-	CASH("CASH"), DEBIT_VISA("Visa", "visa_card.png"), DEBIT_MASTER_CARD("MasterCard", "master_card.png"), 
-	CREDIT_VISA("Visa", "visa_card.png"), CREDIT_MASTER_CARD("MasterCard", "master_card.png"), 
-	CREDIT_AMEX("Amex", "am_ex_card.png"), CREDIT_DISCOVERY("Discover", "discover_card.png"), 
-	GIFT_CERTIFICATE("GIFT CERTIFICATE");
+//	CASH("CASH"), DEBIT_VISA("Visa", "visa_card.png"), DEBIT_MASTER_CARD("MasterCard", "master_card.png"), 
+//	CREDIT_VISA("Visa", "visa_card.png"), CREDIT_MASTER_CARD("MasterCard", "master_card.png"), 
+//	CREDIT_AMEX("Amex", "am_ex_card.png"), CREDIT_DISCOVERY("Discover", "discover_card.png"), 
+//	GIFT_CERTIFICATE("GIFT CERTIFICATE");
+	
+	CASH("CASH"), CARD("CARD"), MENULOG("MENULOG", "menulog.png"), EATNOW("EATNOW", "eatnow.png"), DELIVERY_HERO("DELIVERYHERO", "delivery_hero.png");
 
 	private String displayString;
 	private String imageFile;
@@ -54,7 +56,7 @@ public enum PaymentType {
 	public PosTransaction createTransaction() {
 		PosTransaction transaction = null;
 		switch (this) {
-			case CREDIT_VISA:
+			/*case CREDIT_VISA:
 			case CREDIT_AMEX:
 			case CREDIT_DISCOVERY:
 			case CREDIT_MASTER_CARD:
@@ -70,6 +72,22 @@ public enum PaymentType {
 				
 			case GIFT_CERTIFICATE:
 				transaction = new GiftCertificateTransaction();
+				break;*/
+		
+			case CARD:
+				transaction = new AllCardTransaction();
+				break;
+				
+			case MENULOG:
+				transaction = new MenuLogTransaction();
+				break;
+				
+			case EATNOW:
+				transaction = new EatNowTransaction();
+				break;
+				
+			case DELIVERY_HERO:
+				transaction = new DeliveryHeroTransaction();
 				break;
 				
 			default:

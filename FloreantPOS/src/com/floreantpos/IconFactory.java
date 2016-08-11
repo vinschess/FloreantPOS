@@ -35,7 +35,6 @@ public class IconFactory {
 
 	public static ImageIcon getIcon(String path, String iconName) {
 		ImageIcon icon = iconCache.get(iconName);
-
 		if (icon == null) {
 			try {
 				icon = new ImageIcon(IconFactory.class.getResource(path + iconName)); //$NON-NLS-1$
