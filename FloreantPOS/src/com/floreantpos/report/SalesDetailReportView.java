@@ -88,24 +88,24 @@ public class SalesDetailReportView extends JPanel {
 		SalesDetailedReport report = reportService.getSalesDetailedReport(fromDate, toDate);
 		
 		JasperReport drawerPullReport = ReportUtil.getReport("sales_summary_balance_detailed__1");
-		JasperReport creditCardReport = ReportUtil.getReport("sales_summary_balance_detailed_2");
+		/*JasperReport creditCardReport = ReportUtil.getReport("sales_summary_balance_detailed_2");*/
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("fromDate", shortDateFormatter.format(fromDate));
 		map.put("toDate", shortDateFormatter.format(toDate));
 		map.put("reportTime", fullDateFormatter.format(new Date()));
-		map.put("giftCertReturnCount", report.getGiftCertReturnCount());
+		/*map.put("giftCertReturnCount", report.getGiftCertReturnCount());
 		map.put("giftCertReturnAmount", report.getGiftCertReturnAmount());
 		map.put("giftCertChangeCount", report.getGiftCertChangeCount());
-		map.put("giftCertChangeAmount", report.getGiftCertChangeAmount());
+		map.put("giftCertChangeAmount", report.getGiftCertChangeAmount());*/
 		map.put("tipsCount", report.getTipsCount());
 		map.put("tipsAmount", report.getChargedTips());
 		map.put("tipsPaidAmount", report.getTipsPaid());
 		map.put("drawerPullReport", drawerPullReport);
 		map.put("drawerPullDatasource", new JRTableModelDataSource(report.getDrawerPullDataTableModel()));
-		map.put("creditCardReport", creditCardReport);
-		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel()));
+		/*map.put("creditCardReport", creditCardReport);
+		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel()));*/
 		
 		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balace_detail");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());

@@ -32,6 +32,10 @@ public class SalesBalanceReport {
 	private double coCurrentAmount;
 	private double coPreviousAmount;
 	private double overShortAmount;
+	private double allCardReceiptsAmount;
+	private double menuLogReceiptsAmount;
+	private double eatNowReceiptsAmount;
+	private double deliveryHeroReceiptsAmount;
 
 	public double getArReceiptsAmount() {
 		return arReceiptsAmount;
@@ -256,17 +260,50 @@ public class SalesBalanceReport {
 	public void setTotalRevenueAmount(double totalRevenueAmount) {
 		this.totalRevenueAmount = totalRevenueAmount;
 	}
-	
+		
+
+	public double getAllCardReceiptsAmount() {
+		return allCardReceiptsAmount;
+	}
+
+	public void setAllCardReceiptsAmount(double allCardReceiptsAmount) {
+		this.allCardReceiptsAmount = allCardReceiptsAmount;
+	}
+
+	public double getMenuLogReceiptsAmount() {
+		return menuLogReceiptsAmount;
+	}
+
+	public void setMenuLogReceiptsAmount(double menuLogReceiptsAmount) {
+		this.menuLogReceiptsAmount = menuLogReceiptsAmount;
+	}
+
+	public double getEatNowReceiptsAmount() {
+		return eatNowReceiptsAmount;
+	}
+
+	public void setEatNowReceiptsAmount(double eatNowReceiptsAmount) {
+		this.eatNowReceiptsAmount = eatNowReceiptsAmount;
+	}
+
+	public double getDeliveryHeroReceiptsAmount() {
+		return deliveryHeroReceiptsAmount;
+	}
+
+	public void setDeliveryHeroReceiptsAmount(double deliveryHeroReceiptsAmount) {
+		this.deliveryHeroReceiptsAmount = deliveryHeroReceiptsAmount;
+	}
+
 	public void calculate() {
 		netSalesAmount = (grossTaxableSalesAmount + grossNonTaxableSalesAmount) - discountAmount;
 		totalRevenueAmount = netSalesAmount + salesTaxAmount;
 		grossReceiptsAmount = totalRevenueAmount + payInsAmount + chargedTipsAmount;
 		receiptDiffAmount = grossReceiptsAmount - cashReceiptsAmount - creditCardReceiptsAmount 
-						- arReceiptsAmount - giftCertReturnAmount + giftCertChangeAmount
-						+ cashBackAmount;
+						- arReceiptsAmount/* - giftCertReturnAmount + giftCertChangeAmount*/
+						+ cashBackAmount - allCardReceiptsAmount - menuLogReceiptsAmount - eatNowReceiptsAmount - deliveryHeroReceiptsAmount;
 		cashAccountableAmount = cashReceiptsAmount - grossTipsPaidAmount +
-						tipsDiscountAmount - cashPayoutAmount - giftCertChangeAmount - 
-						cashBackAmount;
+						tipsDiscountAmount - cashPayoutAmount/* - giftCertChangeAmount*/
+						- cashBackAmount;
 		overShortAmount = cashAccountableAmount - drawerPullsAmount -
 						coCurrentAmount + coPreviousAmount;
 						

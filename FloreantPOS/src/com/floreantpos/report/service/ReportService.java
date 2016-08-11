@@ -12,14 +12,18 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ActionHistory;
+import com.floreantpos.model.AllCardTransaction;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
+import com.floreantpos.model.DeliveryHeroTransaction;
 import com.floreantpos.model.DrawerPullReport;
+import com.floreantpos.model.EatNowTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MenuCategory;
+import com.floreantpos.model.MenuLogTransaction;
 import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -276,7 +280,13 @@ public class ReportService {
 			report.setChargedTipsAmount(calculateTips(session, fromDate, toDate));
 			
 			report.setCashReceiptsAmount(calculateCreditReceipt(session, CashTransaction.class, fromDate, toDate));
-			report.setCreditCardReceiptsAmount(calculateCreditReceipt(session, CreditCardTransaction.class, fromDate, toDate));
+			//report.setCreditCardReceiptsAmount(calculateCreditReceipt(session, CreditCardTransaction.class, fromDate, toDate));
+			
+			
+			report.setAllCardReceiptsAmount(calculateCreditReceipt(session, AllCardTransaction.class, fromDate, toDate));
+			report.setMenuLogReceiptsAmount(calculateCreditReceipt(session, MenuLogTransaction.class, fromDate, toDate));
+			report.setEatNowReceiptsAmount(calculateCreditReceipt(session, EatNowTransaction.class, fromDate, toDate));
+			report.setDeliveryHeroReceiptsAmount(calculateCreditReceipt(session, DeliveryHeroTransaction.class, fromDate, toDate));
 			
 			//report.setGiftCertSalesAmount(calculateGiftCertSoldAmount(session, fromDate, toDate));
 			//report.setGiftCertReturnAmount(calculateCreditReceipt(session, GiftCertificateTransaction.class, fromDate, toDate));

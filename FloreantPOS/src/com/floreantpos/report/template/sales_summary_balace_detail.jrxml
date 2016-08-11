@@ -24,10 +24,6 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="giftCertChangeAmount" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="giftCertChangeCount" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="giftCertReturnAmount" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="giftCertReturnCount" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="tipsCount" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="tipsAmount" isForPrompting="false" class="java.lang.Double"/>
 	<parameter name="tipsPaidAmount" isForPrompting="false" class="java.lang.Double"/>
@@ -36,8 +32,6 @@
 	<parameter name="toDate" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="drawerPullDatasource" isForPrompting="false" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="drawerPullReport" isForPrompting="false" class="net.sf.jasperreports.engine.JasperReport"/>
-	<parameter name="creditCardReport" isForPrompting="false" class="net.sf.jasperreports.engine.JasperReport"/>
-	<parameter name="creditCardReportDatasource" isForPrompting="false" class="net.sf.jasperreports.engine.JRDataSource"/>
 
 	<variable name="tipsDifferential" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[Double.valueOf($P{tipsAmount}.doubleValue()-$P{tipsPaidAmount}.doubleValue())]]></variableExpression>
@@ -226,99 +220,10 @@
 					<dataSourceExpression><![CDATA[$P{drawerPullDatasource}]]></dataSourceExpression>
 					<subreportExpression  class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{drawerPullReport}]]></subreportExpression>
 				</subreport>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="58"
-						width="535"
-						height="23"
-						key="subreport-2"
-						positionType="Float"/>
-					<dataSourceExpression><![CDATA[$P{creditCardReportDatasource}]]></dataSourceExpression>
-					<subreportExpression  class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{creditCardReport}]]></subreportExpression>
-				</subreport>
 			</band>
 		</detail>
 		<columnFooter>
 			<band height="139"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="0"
-						y="33"
-						width="167"
-						height="14"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[GIFT CERTIFICATE RETURN]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="170"
-						y="33"
-						width="75"
-						height="14"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{giftCertReturnCount}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="249"
-						y="33"
-						width="84"
-						height="14"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{giftCertReturnAmount}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="0"
-						y="49"
-						width="167"
-						height="14"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[GIFT CERTIFICATE CHANGE]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="170"
-						y="49"
-						width="75"
-						height="14"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{giftCertChangeCount}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="249"
-						y="49"
-						width="84"
-						height="14"
-						key="textField-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{giftCertChangeAmount}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						x="0"
