@@ -447,7 +447,9 @@ public class POSConstants {
 	public static final String RECEIPT_REPORT_PAIDAMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_PAIDAMOUNT_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_PAIDCASH_LABEL = Messages.getString("RECEIPT_REPORT_PAIDCASH_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_PAIDCARD_LABEL = Messages.getString("RECEIPT_REPORT_PAIDCARD_LABEL"); //$NON-NLS-1$
-	public static final String RECEIPT_REPORT_PAIDONLINE_LABEL = Messages.getString("RECEIPT_REPORT_PAIDONLINE_LABEL"); //$NON-NLS-1$
+	public static final String RECEIPT_REPORT_PAIDMENULOG_LABEL = Messages.getString("RECEIPT_REPORT_PAIDMENULOG_LABEL"); //$NON-NLS-1$
+	public static final String RECEIPT_REPORT_PAIDEATNOW_LABEL = Messages.getString("RECEIPT_REPORT_PAIDEATNOW_LABEL"); //$NON-NLS-1$
+	public static final String RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL = Messages.getString("RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_DUEAMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_DUEAMOUNT_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_CHANGEAMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_CHANGEAMOUNT_LABEL"); //$NON-NLS-1$
 }

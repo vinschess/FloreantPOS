@@ -179,10 +179,12 @@ public class ReceiptPrintService {
 				
 				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
-				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
-						transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
-						transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
-					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDMENULOG_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDEATNOW_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
@@ -226,10 +228,12 @@ public class ReceiptPrintService {
 			else {
 				if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
-				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
-						transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
-						transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
-					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDMENULOG_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDEATNOW_LABEL + currencySymbol);
+				else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL + currencySymbol);
 				map.put("cardPayment", false);
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
@@ -327,10 +331,12 @@ public class ReceiptPrintService {
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
 				else if(paymentType.equalsIgnoreCase(PaymentType.CARD.name()))
 					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCARD_LABEL + currencySymbol);
-				else if(paymentType.equalsIgnoreCase(PaymentType.MENULOG.name()) ||
-						paymentType.equalsIgnoreCase(PaymentType.EATNOW.name()) ||
-						paymentType.equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
-					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
+				else if(paymentType.equalsIgnoreCase(PaymentType.MENULOG.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDMENULOG_LABEL + currencySymbol);
+				else if(paymentType.equalsIgnoreCase(PaymentType.EATNOW.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDEATNOW_LABEL + currencySymbol);
+				else if(paymentType.equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+					map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL + currencySymbol);
 			}else{
 				
 				map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
@@ -382,10 +388,12 @@ public class ReceiptPrintService {
 				}else{
 					if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.CASH.name()))
 						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDCASH_LABEL + currencySymbol);
-					else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()) ||
-							transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()) ||
-							transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
-						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDONLINE_LABEL + currencySymbol);
+					else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.MENULOG.name()))
+						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDMENULOG_LABEL + currencySymbol);
+					else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.EATNOW.name()))
+						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDEATNOW_LABEL + currencySymbol);
+					else if(transaction.getPaymentType().equalsIgnoreCase(PaymentType.DELIVERY_HERO.name()))
+						map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL + currencySymbol);
 					map.put("cardPayment",false);
 				}
 			}
