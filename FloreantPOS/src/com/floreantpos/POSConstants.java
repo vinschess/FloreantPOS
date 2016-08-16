@@ -205,6 +205,7 @@ public class POSConstants {
 	public static final String MENU_LOG_REPORT = Messages.getString("PosMessage.142.3"); //$NON-NLS-1$
 	public static final String EAT_NOW_REPORT = Messages.getString("PosMessage.142.4"); //$NON-NLS-1$
 	public static final String DELIVERY_HERO_REPORT = Messages.getString("PosMessage.142.5"); //$NON-NLS-1$
+	public static final String TOTAL_REPORT = Messages.getString("PosMessage.142.6"); //$NON-NLS-1$
 	public static final String PERMISSIONS = Messages.getString("PosMessage.143"); //$NON-NLS-1$
 	public static final String CLOSE = Messages.getString("PosMessage.144"); //$NON-NLS-1$
 	public static final String SHIFT_NAME_ALREADY_EXISTS = Messages.getString("PosMessage.145"); //$NON-NLS-1$

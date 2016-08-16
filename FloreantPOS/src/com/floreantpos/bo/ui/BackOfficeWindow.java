@@ -53,6 +53,7 @@ import com.floreantpos.bo.actions.SalesReportAction;
 import com.floreantpos.bo.actions.ServerProductivityReportAction;
 import com.floreantpos.bo.actions.ShiftExplorerAction;
 import com.floreantpos.bo.actions.TaxExplorerAction;
+import com.floreantpos.bo.actions.TotalReportAction;
 import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
@@ -63,6 +64,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.report.TotalReport;
 import com.jidesoft.swing.JideTabbedPane;
 
 /**
@@ -183,6 +185,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		reportMenu.add(new MenuLogReportAction());
 		reportMenu.add(new EatNowReportAction());
 		reportMenu.add(new DeliveryHeroReportAction());
+		reportMenu.add(new TotalReportAction());
 		reportMenu.add(new MenuUsageReportAction());
 		reportMenu.add(new ServerProductivityReportAction());
 		reportMenu.add(new JournalReportAction());

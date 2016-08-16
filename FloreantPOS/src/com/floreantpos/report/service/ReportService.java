@@ -30,6 +30,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.base.BasePosTransaction;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.report.JournalReportModel;
@@ -42,6 +43,7 @@ import com.floreantpos.report.SalesDetailedReport.DrawerPullData;
 import com.floreantpos.report.SalesExceptionReport;
 import com.floreantpos.report.ServerProductivityReport;
 import com.floreantpos.report.ServerProductivityReport.ServerProductivityReportData;
+import com.floreantpos.report.TotalReport;
 
 public class ReportService {
 	private static SimpleDateFormat fullDateFormatter = new SimpleDateFormat("MMM dd yyyy, hh:mm a");
@@ -279,14 +281,14 @@ public class ReportService {
 			report.setSalesTaxAmount(calculateTax(session, fromDate, toDate));
 			report.setChargedTipsAmount(calculateTips(session, fromDate, toDate));
 			
-			report.setCashReceiptsAmount(calculateCreditReceipt(session, CashTransaction.class, fromDate, toDate));
+			report.setCashReceiptsAmount(calculateGenericReceipt(session, CashTransaction.class, fromDate, toDate));
 			//report.setCreditCardReceiptsAmount(calculateCreditReceipt(session, CreditCardTransaction.class, fromDate, toDate));
 			
 			
-			report.setAllCardReceiptsAmount(calculateCreditReceipt(session, AllCardTransaction.class, fromDate, toDate));
-			report.setMenuLogReceiptsAmount(calculateCreditReceipt(session, MenuLogTransaction.class, fromDate, toDate));
-			report.setEatNowReceiptsAmount(calculateCreditReceipt(session, EatNowTransaction.class, fromDate, toDate));
-			report.setDeliveryHeroReceiptsAmount(calculateCreditReceipt(session, DeliveryHeroTransaction.class, fromDate, toDate));
+			report.setAllCardReceiptsAmount(calculateGenericReceipt(session, AllCardTransaction.class, fromDate, toDate));
+			report.setMenuLogReceiptsAmount(calculateGenericReceipt(session, MenuLogTransaction.class, fromDate, toDate));
+			report.setEatNowReceiptsAmount(calculateGenericReceipt(session, EatNowTransaction.class, fromDate, toDate));
+			report.setDeliveryHeroReceiptsAmount(calculateGenericReceipt(session, DeliveryHeroTransaction.class, fromDate, toDate));
 			
 			//report.setGiftCertSalesAmount(calculateGiftCertSoldAmount(session, fromDate, toDate));
 			//report.setGiftCertReturnAmount(calculateCreditReceipt(session, GiftCertificateTransaction.class, fromDate, toDate));
@@ -322,6 +324,44 @@ public class ReportService {
 			//drawer pulls
 			calculateDrawerPullAmount(session, report, fromDate, toDate);
 			
+			report.calculate();
+			return report;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
+	public TotalReport getTotalReport(Date fromDate, Date toDate) {
+		GenericDAO dao = new GenericDAO();
+		TotalReport report = new TotalReport();
+		Session session = null;
+		
+		report.setFromDate(fromDate);
+		report.setToDate(toDate);
+		report.setReportTime(new Date());
+		try {
+			
+			session = dao.getSession();
+			
+			
+			report.setTotalCash(calculateGenericReceiptRowCount(session, CashTransaction.class, fromDate, toDate));
+			report.setTotalCashPaidAmount(calculateGenericReceipt(session, CashTransaction.class, fromDate, toDate));
+			report.setTotalCashTips(calculateGenericReceiptTips(session, CashTransaction.class, fromDate, toDate));
+			report.setTotalCard(calculateGenericReceiptRowCount(session, AllCardTransaction.class, fromDate, toDate));
+			report.setTotalCardPaidAmount(calculateGenericReceipt(session, AllCardTransaction.class, fromDate, toDate));
+			report.setTotalCardTips(calculateGenericReceiptTips(session, AllCardTransaction.class, fromDate, toDate));
+			report.setTotalMenuLog(calculateGenericReceiptRowCount(session, MenuLogTransaction.class, fromDate, toDate));
+			report.setTotalMenuLogPaidAmount(calculateGenericReceipt(session, MenuLogTransaction.class, fromDate, toDate));
+			report.setTotalMenuLogTips(calculateGenericReceiptTips(session, MenuLogTransaction.class, fromDate, toDate));
+			report.setTotalEatNow(calculateGenericReceiptRowCount(session, EatNowTransaction.class, fromDate, toDate));
+			report.setTotalEatNowPaidAmount(calculateGenericReceipt(session, EatNowTransaction.class, fromDate, toDate));
+			report.setTotalEatNowTips(calculateGenericReceiptTips(session, EatNowTransaction.class, fromDate, toDate));
+			report.setTotalDeliveryHero(calculateGenericReceiptRowCount(session, DeliveryHeroTransaction.class, fromDate, toDate));
+			report.setTotalDeliveryHeroPaidAmount(calculateGenericReceipt(session, DeliveryHeroTransaction.class, fromDate, toDate));
+			report.setTotalDeliveryHeroTips(calculateGenericReceiptTips(session, DeliveryHeroTransaction.class, fromDate, toDate));
+						
 			report.calculate();
 			return report;
 		} finally {
@@ -399,6 +439,42 @@ public class ReportService {
 		return getDoubleAmount(criteria.uniqueResult());
 	}
 	
+	private double calculateGenericReceipt(Session session, Class transactionClass, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.sum(BasePosTransaction.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+	
+	private long calculateGenericReceiptRowCount(Session session, Class transactionClass, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.rowCount());
+		
+		return getLongAmount(criteria.uniqueResult());
+	}
+	
+	private double calculateGenericReceiptTips(Session session, Class transactionClass, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.sum(BasePosTransaction.PROP_TIPS_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+	
 	private double calculateCreditCardReceipt(Session session, Date fromDate, Date toDate) {
 		//cash receipt
 		Criteria criteria = session.createCriteria(CashTransaction.class);
@@ -453,6 +529,13 @@ public class ReportService {
 		return getDoubleAmount(criteria.uniqueResult());
 	}
 
+	private long getLongAmount(Object result) {
+		if(result != null && result instanceof Number) {
+			return ((Number) result).longValue();
+		}
+		return 0;
+	}
+	
 	private double getDoubleAmount(Object result) {
 		if(result != null && result instanceof Number) {
 			return ((Number) result).doubleValue();
