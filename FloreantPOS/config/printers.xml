@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<printers>
+    <defaultKitchenPrinter>
+        <defaultPrinter>false</defaultPrinter>
+        <deviceName>Microsoft XPS Document Writer</deviceName>
+        <virtualPrinter>
+            <id>1</id>
+            <name>kitchen</name>
+        </virtualPrinter>
+    </defaultKitchenPrinter>
+    <kitchenPrinters>
+        <defaultPrinter>false</defaultPrinter>
+        <deviceName>Microsoft XPS Document Writer</deviceName>
+        <virtualPrinter>
+            <id>1</id>
+            <name>kitchen</name>
+        </virtualPrinter>
+    </kitchenPrinters>
+    <receiptPrinter>Microsoft XPS Document Writer</receiptPrinter>
+    <reportPrinter>Microsoft XPS Document Writer</reportPrinter>
+</printers>

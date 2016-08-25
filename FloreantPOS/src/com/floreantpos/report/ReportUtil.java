@@ -73,6 +73,7 @@ public class ReportUtil {
 			return (JasperReport) JRLoader.loadObject(in2);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			IOUtils.closeQuietly(out);
 			if(jasperFile != null) {
 				jasperFile.delete();
