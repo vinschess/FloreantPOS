@@ -518,7 +518,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$P{totalMenuLogTotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{totalEatNowTotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-9.4" x="3" y="85" width="90" height="15" />
