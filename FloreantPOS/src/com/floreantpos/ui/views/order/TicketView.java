@@ -344,6 +344,7 @@ public class TicketView extends JPanel {
 				ticketDAO.refresh(ticket);
 			}
 
+			ReceiptPrintService.printTicket(ticket);
 			OrderController.saveOrder(ticket);
 
 			closeView(false);
