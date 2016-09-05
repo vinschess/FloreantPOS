@@ -105,9 +105,6 @@ public abstract class BaseMenuItemShift  implements Comparable, Serializable {
 	}
 
 
-
-
-
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof com.floreantpos.model.MenuItemShift)) return false;

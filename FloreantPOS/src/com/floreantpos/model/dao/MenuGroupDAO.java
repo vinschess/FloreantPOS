@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.PosException;
@@ -27,6 +28,7 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(MenuGroup.PROP_VISIBLE, Boolean.TRUE));
 			criteria.add(Restrictions.eq(MenuGroup.PROP_PARENT, category));
+			criteria.addOrder(Order.asc(MenuGroup.PROP_SORT_ORDER));
 			
 			return criteria.list();
 		} finally {

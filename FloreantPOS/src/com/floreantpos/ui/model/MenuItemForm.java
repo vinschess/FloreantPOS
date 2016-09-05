@@ -41,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
 import com.floreantpos.extension.InventoryPlugin;
@@ -75,6 +76,7 @@ import com.floreantpos.util.ShiftUtil;
  */
 public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener, ChangeListener {
 	ShiftTableModel shiftTableModel;
+	private Integer oldItemId;
 
 	/** Creates new form FoodItemEditor */
 	public MenuItemForm() throws Exception {
@@ -82,6 +84,28 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}
 
 	public MenuItemForm(MenuItem menuItem) throws Exception {
+		
+		this.oldItemId = menuItem.getId();
+		initComponents();
+
+		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
+		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
+		cbGroup.setModel(new ComboBoxModel(foodGroups));
+
+		TaxDAO taxDAO = new TaxDAO();
+		List<Tax> taxes = taxDAO.findAll();
+		cbTax.setModel(new ComboBoxModel(taxes));
+
+		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
+		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
+
+		setBean(menuItem);
+	}
+	
+	public MenuItemForm(MenuItem menuItem, boolean editMode) throws Exception {
+		
+		this.oldItemId = menuItem.getId();
+		this.editMode = editMode;
 		initComponents();
 
 		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
@@ -154,6 +178,15 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabbedPane = new javax.swing.JTabbedPane();
 		tabGeneral = new javax.swing.JPanel();
+		
+		jLabelItemId = new javax.swing.JLabel();
+		jLabelItemId.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfItemId = new com.floreantpos.swing.IntegerTextField();
+		tfItemId.setColumns(10);
+		if(!isEditMode())
+			tfItemId.setEditable(true);
+		else
+			tfItemId.setEditable(false);
 		jLabel1 = new javax.swing.JLabel();
 		jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfName = new com.floreantpos.swing.FixedLengthTextField();
@@ -187,6 +220,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane2 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
 
+		jLabelItemId.setText(Messages.getString("LABLE_ITEM_ID"));
 		jLabel1.setText(Messages.getString("LABEL_NAME"));
 		jLabel4.setText(Messages.getString("LABEL_GROUP"));
 
@@ -252,61 +286,63 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][25px][][][][][][15px]"));
 
 		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
-		tabGeneral.add(lblTranslatedName, "cell 0 1,alignx leading");
+		tabGeneral.add(lblTranslatedName, "cell 0 2,alignx leading");
 
 		tfTranslatedName = new FixedLengthTextField();
 		tfTranslatedName.setLength(120);
-		tabGeneral.add(tfTranslatedName, "cell 1 1 3 1,growx");
+		tabGeneral.add(tfTranslatedName, "cell 1 2 3 1,growx");
 
 		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
-		tabGeneral.add(lblSortOrder, "cell 0 2");
+		tabGeneral.add(lblSortOrder, "cell 0 3");
 
 		tfSortOrder = new IntegerTextField();
 		tfSortOrder.setColumns(10);
 		tfSortOrder.setText(Messages.getString("MenuItemForm.integerTextField.text")); //$NON-NLS-1$
-		tabGeneral.add(tfSortOrder, "cell 1 2");
+		tabGeneral.add(tfSortOrder, "cell 1 3");
 
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
-		tabGeneral.add(lblBarcode, "cell 0 3,alignx leading");
+		tabGeneral.add(lblBarcode, "cell 0 4,alignx leading");
 
 		tfBarcode = new FixedLengthTextField(120);
-		tabGeneral.add(tfBarcode, "cell 1 3,growx");
+		tabGeneral.add(tfBarcode, "cell 1 4,growx");
 
 		lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
-		tabGeneral.add(lblBuyPrice, "cell 0 5");
+		tabGeneral.add(lblBuyPrice, "cell 0 6");
 
 		tfBuyPrice = new DoubleTextField();
 		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-		tabGeneral.add(tfBuyPrice, "cell 1 5,growx");
-		tabGeneral.add(jLabel3, "cell 0 6,alignx left,aligny center");
-		tabGeneral.add(jLabel4, "cell 0 4,alignx left,aligny center");
+		tabGeneral.add(tfBuyPrice, "cell 1 6,growx");
+		tabGeneral.add(jLabel3, "cell 0 7,alignx left,aligny center");
+		tabGeneral.add(jLabel4, "cell 0 5,alignx left,aligny center");
 		setLayout(new BorderLayout(0, 0));
-		tabGeneral.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
-		tabGeneral.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
-		tabGeneral.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
-		tabGeneral.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(jLabel6, "cell 0 9,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(jLabel2, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(jLabel1, "cell 0 1,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(tfName, "cell 1 1 3 1,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(jLabelItemId, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(tfItemId, "cell 1 0 1 1,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(cbGroup, "cell 1 5,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(btnNewGroup, "cell 3 5,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(tfDiscountRate, "cell 1 9,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(cbTax, "cell 1 9,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
 
 		lblKitchenPrinter = new JLabel("Printer Group");
-		tabGeneral.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
+		tabGeneral.add(lblKitchenPrinter, "cell 0 10"); //$NON-NLS-1$
 
 		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
 				.toArray(new PrinterGroup[0])));
-		tabGeneral.add(cbPrinterGroup, "cell 1 9,growx"); //$NON-NLS-1$
+		tabGeneral.add(cbPrinterGroup, "cell 1 10,growx"); //$NON-NLS-1$
 
 		JLabel lblImage = new JLabel("Image:");
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-		tabGeneral.add(lblImage, "cell 0 10,aligny center");
+		tabGeneral.add(lblImage, "cell 0 11,aligny center");
 
 		lblImagePreview = new JLabel("");
 		lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
 		lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		lblImagePreview.setPreferredSize(new Dimension(100, 100));
-		tabGeneral.add(lblImagePreview, "cell 1 10");
+		tabGeneral.add(lblImagePreview, "cell 1 11");
 
 		JButton btnSelectImage = new JButton("...");
 		btnSelectImage.addActionListener(new ActionListener() {
@@ -314,7 +350,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				doSelectImageFile();
 			}
 		});
-		tabGeneral.add(btnSelectImage, "cell 2 10");
+		tabGeneral.add(btnSelectImage, "cell 2 11");
 
 		btnClearImage = new JButton("Clear");
 		btnClearImage.addActionListener(new ActionListener() {
@@ -322,28 +358,29 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				doClearImage();
 			}
 		});
-		tabGeneral.add(btnClearImage, "cell 3 10");
+		tabGeneral.add(btnClearImage, "cell 3 11");
 
 		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
-		tabGeneral.add(lblButtonColor, "cell 0 11");
+		tabGeneral.add(lblButtonColor, "cell 0 12");
 
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(140, 40));
-		tabGeneral.add(btnButtonColor, "cell 1 11");
+		tabGeneral.add(btnButtonColor, "cell 1 12");
 
 		lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
-		tabGeneral.add(lblTextColor, "cell 0 12");
+		tabGeneral.add(lblTextColor, "cell 0 13");
 
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(140, 40));
-		tabGeneral.add(btnTextColor, "cell 1 12");
+		tabGeneral.add(btnTextColor, "cell 1 13");
 
 		cbShowTextWithImage = new JCheckBox("Show image only");
 		cbShowTextWithImage.setActionCommand("Show Text with Image");
-		tabGeneral.add(cbShowTextWithImage, "cell 1 13"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
-		tabGeneral.add(jLabel5, "cell 2 7"); //$NON-NLS-1$
+		tabGeneral.add(cbShowTextWithImage, "cell 1 14"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(btnNewTax, "cell 2 9,alignx left,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(jLabel5, "cell 2 8"); //$NON-NLS-1$
+		
 		add(tabbedPane);
 
 		addRecepieExtension();
@@ -495,6 +532,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private FixedLengthTextField tfTranslatedName;
 	private JLabel lblSortOrder;
 	private IntegerTextField tfSortOrder;
+	private javax.swing.JLabel jLabelItemId;
+	private IntegerTextField tfItemId;
 
 	private void addMenuItemModifierGroup() {
 		try {
@@ -558,13 +597,50 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	public boolean save() {
 		try {
+			
 			if (!updateModel())
 				return false;
 
 			MenuItem menuItem = (MenuItem) getBean();
 			MenuItemDAO menuItemDAO = new MenuItemDAO();
-			menuItemDAO.saveOrUpdate(menuItem);
-		} catch (Exception e) {
+
+			Session session = null;
+			Transaction tx = null;
+			/*
+			 * Check Item Id is already present or not
+			 */
+			try{
+					
+				Integer itemId = menuItem.getId();
+				if(itemId != null){
+					session = MenuItemDAO.getInstance().createNewSession();
+					tx = session.beginTransaction();
+					
+					MenuItem tempMenuItem = menuItemDAO.get(itemId);
+					if(isEditMode()){
+						session.update(menuItem);
+					
+					} else{
+						if(tempMenuItem!=null)
+							throw new Exception("ITEM ID already present with ITEM NAME : "+tempMenuItem.getDisplayName());
+						else
+							session.save(menuItem);
+							
+					}
+						
+				}
+				tx.commit();
+			} catch(Exception ex){
+				MessageDialog.showError(ex.getMessage(), ex);
+				tx.rollback();
+				return false;
+				
+			}finally {
+				if (session != null) {
+					session.close();
+				}
+			}
+		} catch (Exception e){
 			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 			return false;
 		}
@@ -584,6 +660,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			session.close();
 		}
 
+		tfItemId.setText(String.valueOf(menuItem.getId()));
 		tfName.setText(menuItem.getName());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
 		tfBarcode.setText(menuItem.getBarcode());
@@ -624,8 +701,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
 			return false;
 		}
+		
+		if(!isEditMode() && POSUtil.isBlankOrNull(tfItemId.getText())){
+			MessageDialog.showError(com.floreantpos.POSConstants.ITEM_ID_REQUIRED);
+			return false;
+		}
 
 		MenuItem menuItem = getBean();
+		menuItem.setId(tfItemId.getInteger());
 		menuItem.setName(itemName);
 		menuItem.setBarcode(tfBarcode.getText());
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
@@ -868,4 +951,5 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		MenuItem menuItem = (MenuItem) getBean();
 		view.initView(menuItem);
 	}
+
 }

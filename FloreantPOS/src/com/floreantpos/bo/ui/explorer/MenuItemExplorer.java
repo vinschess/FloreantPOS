@@ -67,8 +67,8 @@ public class MenuItemExplorer extends TransparentPanel {
 					menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 					
 					tableModel.setRow(index, menuItem);
-
-					MenuItemForm editor = new MenuItemForm(menuItem);
+					MenuItemForm editor = new MenuItemForm(menuItem, true);
+					editor.setEditMode(true);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
@@ -86,6 +86,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuItemForm editor = new MenuItemForm();
+					editor.setEditMode(false);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())

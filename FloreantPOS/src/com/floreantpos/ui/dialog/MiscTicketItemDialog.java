@@ -148,6 +148,8 @@ public class MiscTicketItemDialog extends POSDialog {
 	}//GEN-LAST:event_doCancel
 
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
+		if(tfItemPrice==null || tfItemPrice.getText().trim().equals(""))
+			tfItemPrice.setText("0");
 		double amount = tfItemPrice.getDouble();
 		String itemName = tfItemName.getText();
 		
@@ -156,7 +158,7 @@ public class MiscTicketItemDialog extends POSDialog {
 			return;
 		}
 		
-		if(amount <= 0 || Double.isNaN(amount)) {
+		if(amount < 0 || Double.isNaN(amount)) {
 			POSMessageDialog.showError(Application.getPosWindow(), "Please intsert valid item price");
 			return;
 		}
