@@ -27,11 +27,13 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
+import com.floreantpos.entrytool.ReceiptsMonitor;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.swing.MessageDialog;
@@ -46,6 +48,8 @@ import com.floreantpos.util.UserNotFoundException;
  * @author MShahriar
  */
 class LoginPasswordEntryView extends JPanel {
+	
+	private static Log logger = LogFactory.getLog(LoginPasswordEntryView.class);
 
 	/** Creates new form PasswordScreen */
 	LoginPasswordEntryView() {
@@ -161,7 +165,20 @@ class LoginPasswordEntryView extends JPanel {
 			}
 			Application application = Application.getInstance();
 			application.doLogin(user);
-
+			
+			/*
+			 * Start ReceiptsMontior thread
+			 */
+			ReceiptsMonitor receiptsMonitorThread = ReceiptsMonitor.getInstance();
+			if(!receiptsMonitorThread.isAlive()){
+				receiptsMonitorThread.start();
+				System.out.println("Receipts Monitor Thread started...");
+				logger.debug("Receipts Monitor Thread started...");
+			}else{
+				System.out.println("Receipts Monitor Thread is already alive!!!");
+				logger.debug("Receipts Monitor Thread is already alive!!!");
+			}
+			
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
 			POSMessageDialog.showError(Application.getPosWindow(), "User not found");

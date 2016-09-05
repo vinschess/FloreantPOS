@@ -453,4 +453,27 @@ public class POSConstants {
 	public static final String RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL = Messages.getString("RECEIPT_REPORT_PAIDDELIVERYHERO_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_DUEAMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_DUEAMOUNT_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_CHANGEAMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_CHANGEAMOUNT_LABEL"); //$NON-NLS-1$
+	
+	//EntryTool
+	public static final String ENTRYTOOL_FOLDERPATH_TOREADRECEIPTS = Messages.getString("ENTRYTOOL_FOLDERPATH_TOREADRECEIPTS"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_MOVEPATH_AFTERREAD = Messages.getString("ENTRYTOOL_MOVEPATH_AFTERREAD"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_MENULOG = Messages.getString("ENTRYTOOL_MENULOG"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_EATNOW = Messages.getString("ENTRYTOOL_EATNOW"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_DELIVERYHERO = Messages.getString("ENTRYTOOL_DELIVERYHERO"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_CASH = Messages.getString("ENTRYTOOL_CASH"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_PAYMENTMETHOD = Messages.getString("ENTRYTOOL_PAYMENTMETHOD"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_FOODITEMS = Messages.getString("ENTRYTOOL_FOODITEMS"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_DISCOUNTINFORMATION = Messages.getString("ENTRYTOOL_DISCOUNTINFORMATION"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_DELIVERY_INTERVAL_INMINS = Messages.getString("ENTRYTOOL_DELIVERY_INTERVAL_INMINS"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_ORDER_TYPE = Messages.getString("ENTRYTOOL_ORDER_TYPE"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_ORDER_PICKUP = Messages.getString("ENTRYTOOL_ORDER_PICKUP"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_ORDER_DELIVERY = Messages.getString("ENTRYTOOL_ORDER_DELIVERY"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_MENUMODIFIER_STOP = Messages.getString("ENTRYTOOL_MENUMODIFIER_STOP"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_DEFAULTOWNER = Messages.getString("ENTRYTOOL_DEFAULTOWNER"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_DELIVERY_ADDRESS = Messages.getString("ENTRYTOOL_DELIVERY_ADDRESS"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_CUSTOMER_DETAIL = Messages.getString("ENTRYTOOL_CUSTOMER_DETAIL"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_ORDER_SUMMARY = Messages.getString("ENTRYTOOL_ORDER_SUMMARY"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_NAME_START = Messages.getString("ENTRYTOOL_NAME_START"); //$NON-NLS-1$
+	public static final String ENTRYTOOL_MOBILE_START = Messages.getString("ENTRYTOOL_MOBILE_START"); //$NON-NLS-1$
+	
 }

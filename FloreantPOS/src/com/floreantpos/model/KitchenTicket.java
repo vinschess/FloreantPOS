@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseKitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
@@ -104,8 +105,12 @@ public class KitchenTicket extends BaseKitchenTicket {
 				if(ticket.getTableNumbers() != null) {
 					kitchenTicket.setTableNumbers(new ArrayList<String>(ticket.getTableNumbers()));
 				}
-				
-				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
+				try{
+					kitchenTicket.setServerName(ticket.getOwner().getFirstName());
+				}catch(Exception e){
+					System.out.println("Ticket owner name not available. So setting default to Administrator.");
+					kitchenTicket.setServerName(POSConstants.ENTRYTOOL_DEFAULTOWNER);
+				}
 				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
 				
 				if(StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_NAME))) {

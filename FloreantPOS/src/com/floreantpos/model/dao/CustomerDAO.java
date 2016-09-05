@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
@@ -47,5 +48,28 @@ public class CustomerDAO extends BaseCustomerDAO {
 		}
 
 	}
+	
+	/*public static void saveOrUpdateCustomerDetails(Customer customer) throws Exception{
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		GenericDAO dao = new GenericDAO();
+		try {
+			session = dao.createNewSession();
+			tx = session.beginTransaction();
+					
+			CustomerDAO.getInstance().saveOrUpdate(customer);
+			tx.commit();
+		} catch (Exception e) {
+			try {
+				tx.rollback();
+			} catch (Exception x) {
+			}
+			throw e;
+		} finally {
+			dao.closeSession(session);
+		}
+	}*/
 
 }

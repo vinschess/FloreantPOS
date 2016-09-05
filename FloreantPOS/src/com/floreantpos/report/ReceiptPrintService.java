@@ -624,4 +624,30 @@ public class ReceiptPrintService {
 
 		return no;
 	}
+	
+	public static void printToKitchenForMyMoniotr(Ticket ticket) {
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = KitchenTicketDAO.getInstance().createNewSession();
+			transaction = session.beginTransaction();
+
+			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
+
+			for (KitchenTicket kitchenTicket : kitchenTickets) {
+				
+				session.saveOrUpdate(kitchenTicket);
+			}
+
+			transaction.commit();
+			
+			TicketDAO.getInstance().saveOrUpdate(ticket);
+
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
+		} finally {
+			session.close();
+		}
+	}
 }
