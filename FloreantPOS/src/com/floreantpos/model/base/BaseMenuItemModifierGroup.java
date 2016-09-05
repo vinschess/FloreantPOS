@@ -21,7 +21,6 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	public static String PROP_MODIFIER_GROUP = "modifierGroup";
 	public static String PROP_MAX_QUANTITY = "maxQuantity";
 
-
 	// constructors
 	public BaseMenuItemModifierGroup () {
 		initialize();
@@ -48,6 +47,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 		protected java.lang.Integer minQuantity;
 		protected java.lang.Integer maxQuantity;
 		protected java.lang.Integer sortOrder;
+		protected java.lang.Integer parentMenuItem;
 
 	// many to one
 	private com.floreantpos.model.MenuModifierGroup modifierGroup;
@@ -144,7 +144,19 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 
 
 
+	/**
+	 * @return the parentMenuItem
+	 */
+	public java.lang.Integer getParentMenuItem() {
+		return parentMenuItem;
+	}
 
+	/**
+	 * @param parentMenuItem the parentMenuItem to set
+	 */
+	public void setParentMenuItem(java.lang.Integer parentMenuItem) {
+		this.parentMenuItem = parentMenuItem;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

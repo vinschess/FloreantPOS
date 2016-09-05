@@ -150,6 +150,7 @@ public class POSConstants {
 	public static final String INSTRUCTION_CANNOT_BE_EMPTY = Messages.getString("PosMessage.90"); //$NON-NLS-1$
 	public static final String TABLE_NO_BUTTON_TEXT = Messages.getString("TABLE_NO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NAME_REQUIRED = Messages.getString("PosMessage.92"); //$NON-NLS-1$
+	public static final String ITEM_ID_REQUIRED = Messages.getString("PosMessage.92.1"); //$NON-NLS-1$
 	public static final String THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN = Messages.getString("PosMessage.93"); //$NON-NLS-1$
 	public static final String TIME = Messages.getString("PosMessage.94"); //$NON-NLS-1$
 	public static final String VOID_REASON = Messages.getString("PosMessage.95"); //$NON-NLS-1$

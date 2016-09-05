@@ -10,10 +10,11 @@
     <property column="MAX_QUANTITY" name="maxQuantity" type="java.lang.Integer"/>
     
     <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
+    <property column="MENUITEM_MODIFIERGROUP_ID" name="parentMenuItem" type="java.lang.Integer" />
     
     <!-- Associations -->
     <!-- bi-directional one-to-many association to ModifierItem -->
     <many-to-one class="MenuModifierGroup" column="MODIFIER_GROUP" name="modifierGroup"/>
-    <!-- <many-to-one class="MenuItem" column="MENU_ITEM" name="parentMenuItem"/> -->
+    <!-- <many-to-one class="MenuItem" column="MENUITEM_MODIFIERGROUP_ID" name="parentMenuItem"/> -->
   </class>
 </hibernate-mapping>
