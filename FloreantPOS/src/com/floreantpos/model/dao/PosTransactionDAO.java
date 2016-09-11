@@ -63,8 +63,8 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			}
 			
 			if(from != null && to != null) {
-				//criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
-				//criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
+				criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
+				criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
 			}
 
 			return criteria.list();
