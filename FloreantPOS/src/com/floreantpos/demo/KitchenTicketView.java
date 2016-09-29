@@ -138,6 +138,8 @@ public class KitchenTicketView extends JPanel {
 			}
 		});
 		resizeTableColumns();
+		Font oldFont = table.getFont();
+		table.setFont(oldFont.deriveFont(Font.BOLD));
 
 		AbstractAction action = new AbstractAction() {
 
