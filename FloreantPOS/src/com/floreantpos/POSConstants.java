@@ -477,4 +477,9 @@ public class POSConstants {
 	public static final String ENTRYTOOL_NAME_START = Messages.getString("ENTRYTOOL_NAME_START"); //$NON-NLS-1$
 	public static final String ENTRYTOOL_MOBILE_START = Messages.getString("ENTRYTOOL_MOBILE_START"); //$NON-NLS-1$
 	
+	//
+	public static final String REDUCE_WIDTH_OF_POSBUTTON = Messages.getString("REDUCE_WIDTH_OF_POSBUTTON"); //$NON-NLS-1$
+	public static final String REDUCE_HEIGHT_OF_POSBUTTON = Messages.getString("REDUCE_HEIGHT_OF_POSBUTTON"); //$NON-NLS-1$
+	
+	
 }

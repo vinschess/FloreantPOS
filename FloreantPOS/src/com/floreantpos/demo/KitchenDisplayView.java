@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
@@ -90,7 +91,12 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		topPanel.add(cbTicketTypes);
 
 		if (TerminalConfig.isKitchenMode()) {
-			btnLogout = new PosButton("LOG OUT");
+			btnLogout = new PosButton("Logout");
+
+			Dimension btnLogoutSize = btnLogout.getPreferredSize();
+			btnLogoutSize = new Dimension((int)btnLogoutSize.getWidth()-Integer.parseInt(POSConstants.REDUCE_WIDTH_OF_POSBUTTON),
+					(int)btnLogoutSize.getHeight()-Integer.parseInt(POSConstants.REDUCE_HEIGHT_OF_POSBUTTON));
+			btnLogout.setPreferredSize(btnLogoutSize);
 			btnLogout.addActionListener(this);
 			topPanel.add(new JLabel(), "grow");
 			topPanel.add(btnLogout);
@@ -158,7 +164,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) {
+		if (e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("logout")) {
 			Application.getInstance().doLogout();
 		}
 		if (e.getSource() == viewUpdateTimer) {

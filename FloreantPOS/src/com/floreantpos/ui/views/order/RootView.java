@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
@@ -46,7 +47,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public void showView(String viewName) {
-		if(LoginView.VIEW_NAME.equals(viewName)) {
+		if(LoginView.VIEW_NAME.equals(viewName) || KitchenDisplayView.VIEW_NAME.equals(viewName)) {
 			headerPanel.setVisible(false);
 		}
 		else {
