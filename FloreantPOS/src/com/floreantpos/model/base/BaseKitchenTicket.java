@@ -38,6 +38,24 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		this.setId(id);
 		initialize();
 	}
+	
+	/**
+	 * Copy Constructor
+	 */
+	public BaseKitchenTicket (com.floreantpos.model.base.BaseKitchenTicket ticket) {
+		this.setId(ticket.id);
+		this.setTicketId(ticket.ticketId);
+		this.setCreateDate(ticket.createDate);
+		this.setClosingDate(ticket.closingDate);
+		this.setVoided(ticket.voided);
+		this.setStatus(ticket.status);
+		this.setServerName(ticket.serverName);
+		this.setTicketType(ticket.ticketType);
+		this.setPrinterGroup(ticket.printerGroup);
+		this.setTableNumbers(ticket.tableNumbers);
+		this.setTicketItems(ticket.ticketItems);
+		initialize();
+	}
 
 	protected void initialize () {}
 

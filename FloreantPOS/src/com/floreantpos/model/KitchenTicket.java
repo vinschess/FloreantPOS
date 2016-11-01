@@ -30,6 +30,14 @@ public class KitchenTicket extends BaseKitchenTicket {
 	public KitchenTicket (java.lang.Integer id) {
 		super(id);
 	}
+	
+	/**
+	 *  Copy Constructor
+	 */
+	public KitchenTicket(com.floreantpos.model.KitchenTicket ticket){
+		super(ticket);
+		this.setCustomerName(ticket.customerName);
+	}
 
 /*[CONSTRUCTOR MARKER END]*/
 	

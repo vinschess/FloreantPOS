@@ -133,7 +133,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			return;
 		}
 
-		if (ticketPanel.addTicket(ticket)) {
+		if (ticketPanel.addTicket(ticket, this)) {
 			if (updateView) {
 				//ticketPanel.revalidate();
 				ticketPanel.repaint();

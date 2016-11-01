@@ -47,20 +47,31 @@ public class KitchenTicketView extends JPanel {
 	KitchenTicketStatusSelector statusSelector;
 	private TimerWatch timerWatch;
 	private JScrollPane scrollPane;
+	private boolean buttonPanelRequire;
+	private List<KitchenTicketView> kitchenTicketViews;
 
-	public KitchenTicketView(KitchenTicket ticket) {
+	public KitchenTicketView(KitchenTicket ticket, boolean buttonPanelRequire, KitchenTicket subTicket, List<KitchenTicketView> kitchenTicketViews) {
 		this.ticket = ticket;
+		this.buttonPanelRequire = buttonPanelRequire;
+		this.kitchenTicketViews = kitchenTicketViews;
 
 		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
 				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
 		setLayout(new BorderLayout(5, 5));
 
-		createHeader(ticket);
+		if(subTicket==null){
+			createHeader(ticket);
+	
+			createTable(ticket);
+		}else{
+			createHeader(subTicket);
+			
+			createTable(subTicket);
+		}
 
-		createTable(ticket);
-
-		createButtonPanel();
+		if(this.buttonPanelRequire)
+			createButtonPanel();
 
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
@@ -96,8 +107,8 @@ public class KitchenTicketView extends JPanel {
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			ticketInfo += "<br/>Table " + ticket.getTableNumbers();
 		}
-		ticketId.setText("<html>" + ticketInfo + "</html>");
 		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
+		ticketId.setText("<html>" + ticketInfo + "</html>");
 
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
@@ -109,57 +120,122 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createTable(KitchenTicket ticket) {
-		tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
-		table = new JTable(tableModel);
-		table.setRowSelectionAllowed(false);
-		table.setCellSelectionEnabled(false);
-		table.setRowHeight(50);
-		table.setTableHeader(null);
-		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-
-				if (ticketItem != null && ticketItem.getStatus() != null) {
-					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
-						rendererComponent.setBackground(Color.green);
+		/*int breakPoint = Integer.parseInt(POSConstants.KITCHEN_BREAK_POINT);
+		int totalSubTable = (ticket.getTicketItems().size()-1)/breakPoint;
+		if(totalSubTable >= 1){
+			for(int i=0 ; i<=totalSubTable ; i++){
+				int listFromIndex = i*breakPoint;
+				int listToIndex = i==totalSubTable?ticket.getTicketItems().size():(i+1)*breakPoint;
+				
+				List<com.floreantpos.model.KitchenTicketItem> ticketItems = ticket.getTicketItems().subList(listFromIndex, listToIndex);
+				tableModel = new KitchenTicketTableModel(ticketItems);
+				table = new JTable(tableModel);
+				table.setRowSelectionAllowed(false);
+				table.setCellSelectionEnabled(false);
+				table.setRowHeight(50);
+				table.setTableHeader(null);
+				table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+					@Override
+					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+						Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		
+						KitchenTicketItem ticketItem = tableModel.getRowData(row);
+		
+						if (ticketItem != null && ticketItem.getStatus() != null) {
+							if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
+								rendererComponent.setBackground(Color.green);
+							}
+							else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
+								rendererComponent.setBackground(Color.red);
+							}
+							else {
+								rendererComponent.setBackground(Color.white);
+							}
+						}
+		
+						return rendererComponent;
 					}
-					else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
-						rendererComponent.setBackground(Color.red);
+				});
+				resizeTableColumns();
+				Font oldFont = table.getFont();
+				table.setFont(oldFont.deriveFont(Font.BOLD,18));
+		
+				AbstractAction action = new AbstractAction() {
+		
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int row = Integer.parseInt(e.getActionCommand());
+						KitchenTicketItem ticketItem = tableModel.getRowData(row);
+						if(!ticketItem.isCookable()) {
+							return;
+						}
+						statusSelector.setTicketItem(ticketItem);
+						statusSelector.setLocationRelativeTo(KitchenTicketView.this);
+						statusSelector.setVisible(true);
+						table.repaint();
 					}
-					else {
-						rendererComponent.setBackground(Color.white);
-					}
-				}
-
-				return rendererComponent;
+				};
+		
+				new ButtonColumn(table, action, 2);
+				scrollPane = new JScrollPane(table);
+				add(scrollPane);
+				add(table);
 			}
-		});
-		resizeTableColumns();
-		Font oldFont = table.getFont();
-		table.setFont(oldFont.deriveFont(Font.BOLD));
-
-		AbstractAction action = new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int row = Integer.parseInt(e.getActionCommand());
-				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				if(!ticketItem.isCookable()) {
-					return;
+			
+		}else{*/
+			tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
+			table = new JTable(tableModel);
+			table.setRowSelectionAllowed(false);
+			table.setCellSelectionEnabled(false);
+			table.setRowHeight(50);
+			table.setTableHeader(null);
+			table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+					Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	
+					KitchenTicketItem ticketItem = tableModel.getRowData(row);
+	
+					if (ticketItem != null && ticketItem.getStatus() != null) {
+						if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
+							rendererComponent.setBackground(Color.green);
+						}
+						else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
+							rendererComponent.setBackground(Color.red);
+						}
+						else {
+							rendererComponent.setBackground(Color.white);
+						}
+					}
+	
+					return rendererComponent;
 				}
-				statusSelector.setTicketItem(ticketItem);
-				statusSelector.setLocationRelativeTo(KitchenTicketView.this);
-				statusSelector.setVisible(true);
-				table.repaint();
-			}
-		};
-
-		new ButtonColumn(table, action, 2);
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
+			});
+			resizeTableColumns();
+			Font oldFont = table.getFont();
+			table.setFont(oldFont.deriveFont(Font.BOLD,18));
+	
+			AbstractAction action = new AbstractAction() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int row = Integer.parseInt(e.getActionCommand());
+					KitchenTicketItem ticketItem = tableModel.getRowData(row);
+					if(!ticketItem.isCookable()) {
+						return;
+					}
+					statusSelector.setTicketItem(ticketItem);
+					statusSelector.setLocationRelativeTo(KitchenTicketView.this);
+					statusSelector.setVisible(true);
+					table.repaint();
+				}
+			};
+	
+			new ButtonColumn(table, action, 2);
+			scrollPane = new JScrollPane(table);
+			add(scrollPane);
+			/*add(table);
+		}*/
 	}
 
 	private void createButtonPanel() {
@@ -287,6 +363,10 @@ public class KitchenTicketView extends JPanel {
 
 			KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
 			Container parent = this.getParent();
+			if(kitchenTicketViews!=null){
+				for(KitchenTicketView kitchenTicketView : kitchenTicketViews)
+					parent.remove(kitchenTicketView);
+			}
 			parent.remove(this);
 			parent.revalidate();
 			parent.repaint();

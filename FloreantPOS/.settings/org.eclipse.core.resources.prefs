@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//config/printerlayouts/sales_summary_balance_report.jrxml=UTF-8
+encoding//config/printerlayouts/ticket-receipt.jrxml=UTF-8
 encoding//src/com/floreantpos/report/template/sales_summary_balance_report.jrxml=UTF-8
 encoding/<project>=UTF-8
 encoding/filters=UTF-8
