@@ -103,7 +103,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		}
 
 		firstTopPanel.add(topPanel);
-		add(firstTopPanel, BorderLayout.NORTH);
+		//add(firstTopPanel, BorderLayout.NORTH);
 
 		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane scrollPane = new JScrollPane(ticketPanel);

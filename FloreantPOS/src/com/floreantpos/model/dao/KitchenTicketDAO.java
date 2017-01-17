@@ -31,4 +31,17 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			closeSession(session);
 		}
 	}
+	
+	public java.util.List<com.floreantpos.model.KitchenTicket> findByTicketId(java.lang.Integer ticketId){
+		Session session = null;
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_TICKET_ID, ticketId));
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
 }

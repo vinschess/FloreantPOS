@@ -42,10 +42,10 @@ public class KitchenTicketListPanel extends JPanel {
 		/*
 		 * 1st 100 --> Horizontal Scroll Bar Size
 		 * 2nd 100 --> DONE and VOID button space
-		 * 3rd 60 --> Spaces between components
+		 * 3rd 100 --> Spaces between components
 		 * 4th 50 --> Row height of ticket table 
 		 */
-		int breakPoint = (int) ((topFrame.getHeight()-layout.getLayoutComponent(BorderLayout.NORTH).getPreferredSize().getHeight()-100-100-80)/50);
+		int breakPoint = (int) ((topFrame.getHeight()-100-100-100)/50);
 		int totalSubTable = (ticket.getTicketItems().size()-1)/breakPoint;
 		if(totalSubTable >= 1){
 			createSubTicketsToDisplay(totalSubTable, breakPoint, ticket);

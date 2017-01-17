@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -40,6 +41,7 @@ import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
+import com.floreantpos.model.KitchenReceiptVisibility;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -50,6 +52,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.CookingInstructionDAO;
+import com.floreantpos.model.dao.KitchenReceiptVisibilityDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -701,6 +704,7 @@ public class TicketView extends JPanel {
 			btnMisc = new com.floreantpos.swing.PosButton();
 			btnGuestNo = new com.floreantpos.swing.PosButton();
 			btnTableNumber = new com.floreantpos.swing.PosButton();
+			btnEnableDisableKitchenReceipt = new com.floreantpos.swing.PosButton();
 
 			setBorder(new CompoundBorder(new EmptyBorder(10, 2, 2, 1), new TitledBorder("")));
 			setLayout(new BorderLayout());
@@ -739,6 +743,32 @@ public class TicketView extends JPanel {
 				}
 			});
 
+			btnGuestNo.setText(com.floreantpos.POSConstants.GUEST_NO_BUTTON_TEXT);
+			btnGuestNo.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					btnCustomerNumberActionPerformed(evt);
+				}
+			});
+			
+			KitchenReceiptVisibilityDAO kitchenReceiptVisibilityDAO = KitchenReceiptVisibilityDAO.getInstance();
+			KitchenReceiptVisibility kitchenReceiptVisibility = kitchenReceiptVisibilityDAO.get(1);
+			if(kitchenReceiptVisibility==null){
+				kitchenReceiptVisibility = new KitchenReceiptVisibility();
+				kitchenReceiptVisibility.setId(1);
+				kitchenReceiptVisibility.setEnable(1);
+				kitchenReceiptVisibilityDAO.save(kitchenReceiptVisibility);
+			}
+			if(kitchenReceiptVisibility.getEnable()==1){
+				btnEnableDisableKitchenReceipt.setText(com.floreantpos.POSConstants.DISABLE_KITCHEN_RECEIPT_BUTTON_TEXT);
+			}else{
+				btnEnableDisableKitchenReceipt.setText(com.floreantpos.POSConstants.ENABLE_KITCHEN_RECEIPT_BUTTON_TEXT);
+			}
+			btnEnableDisableKitchenReceipt.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					btnEnableDisableKitchenReceiptActionPerformed(evt);
+				}
+			});
+			
 			btnGuestNo.setText(com.floreantpos.POSConstants.GUEST_NO_BUTTON_TEXT);
 			btnGuestNo.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -792,6 +822,7 @@ public class TicketView extends JPanel {
 			buttonPanel.add(btnCustomer);
 			buttonPanel.add(btnTableNumber);
 			buttonPanel.add(btnGuestNo);
+			buttonPanel.add(btnEnableDisableKitchenReceipt);
 
 			add(buttonPanel);
 		}// </editor-fold>//GEN-END:initComponents
@@ -836,6 +867,28 @@ public class TicketView extends JPanel {
 			updateGuestNumber();
 		}// GEN-LAST:event_btnCustomerNumberActionPerformed
 
+		private void btnEnableDisableKitchenReceiptActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCustomerNumberActionPerformed
+			
+			KitchenReceiptVisibilityDAO kitchenReceiptVisibilityDAO = new KitchenReceiptVisibilityDAO();
+			KitchenReceiptVisibility kitchenReceiptVisibility = kitchenReceiptVisibilityDAO.get(1);
+			if(kitchenReceiptVisibility.getEnable()==1){
+				int option = JOptionPane.showConfirmDialog(TicketView.this, "Do you want to disable print Kitchen Receipt?", "Confirm", JOptionPane.YES_NO_OPTION);
+				if (option != JOptionPane.YES_OPTION) {
+					return;
+				}
+				kitchenReceiptVisibility.setEnable(0);
+				btnEnableDisableKitchenReceipt.setText(com.floreantpos.POSConstants.ENABLE_KITCHEN_RECEIPT_BUTTON_TEXT);
+			}else{
+				int option = JOptionPane.showConfirmDialog(TicketView.this, "Do you want to enable print Kitchen Receipt?", "Confirm", JOptionPane.YES_NO_OPTION);
+				if (option != JOptionPane.YES_OPTION) {
+					return;
+				}
+				kitchenReceiptVisibility.setEnable(1);
+				btnEnableDisableKitchenReceipt.setText(com.floreantpos.POSConstants.DISABLE_KITCHEN_RECEIPT_BUTTON_TEXT);
+			}
+			kitchenReceiptVisibilityDAO.saveOrUpdate(kitchenReceiptVisibility);
+		}
+		
 		private void updateGuestNumber() {
 			Ticket thisTicket = getTicket();
 			int guestNumber = thisTicket.getNumberOfGuests();
@@ -937,6 +990,7 @@ public class TicketView extends JPanel {
 		private com.floreantpos.swing.PosButton btnTableNumber;
 		private com.floreantpos.swing.PosButton btnCustomer;
 		private com.floreantpos.swing.PosButton btnSearchItem;
+		private com.floreantpos.swing.PosButton btnEnableDisableKitchenReceipt;
 		
 		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 		private PosButton btnDiscount = new PosButton("DISCOUNT");

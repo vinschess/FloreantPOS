@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -27,6 +26,7 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
+import com.floreantpos.model.KitchenReceiptVisibility;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
@@ -35,6 +35,7 @@ import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.KitchenReceiptVisibilityDAO;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -553,7 +554,19 @@ public class ReceiptPrintService {
 					jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
 					jasperPrint.setProperty("printerName", deviceName);
 					
-					printQuitely(jasperPrint);
+					/**
+					 * @author vinay.gupta
+					 */
+					KitchenReceiptVisibilityDAO kitchenReceiptVisibilityDAO = KitchenReceiptVisibilityDAO.getInstance();
+					KitchenReceiptVisibility kitchenReceiptVisibility = kitchenReceiptVisibilityDAO.get(1);
+					if(kitchenReceiptVisibility==null){
+						kitchenReceiptVisibility = new KitchenReceiptVisibility();
+						kitchenReceiptVisibility.setId(1);
+						kitchenReceiptVisibility.setEnable(1);
+						kitchenReceiptVisibilityDAO.save(kitchenReceiptVisibility);
+					}
+					if(kitchenReceiptVisibility.getEnable()==1)
+						printQuitely(jasperPrint);
 				}
 				
 				session.saveOrUpdate(kitchenTicket);
@@ -568,6 +581,29 @@ public class ReceiptPrintService {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		} finally {
 			session.close();
+		}
+	}
+	
+	public static void reprintToKitchen(Ticket ticket) {
+		try {
+			
+			List<KitchenTicket> kitchenTickets = KitchenTicketDAO.getInstance().findByTicketId(ticket.getId());
+			for (KitchenTicket kitchenTicket : kitchenTickets) {
+				
+				List<Printer> printers = kitchenTicket.getPrinters();
+				for (Printer printer : printers) {
+					String deviceName = printer.getDeviceName();
+
+					JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
+					jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
+					jasperPrint.setProperty("printerName", deviceName);
+					
+					printQuitely(jasperPrint);
+				}
+			}
+
+		} catch (Exception e) {
+			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
 	}
 

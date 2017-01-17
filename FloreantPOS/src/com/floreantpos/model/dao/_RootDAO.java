@@ -26,6 +26,7 @@ import com.floreantpos.model.InventoryTransaction;
 import com.floreantpos.model.InventoryUnit;
 import com.floreantpos.model.InventoryVendor;
 import com.floreantpos.model.InventoryWarehouse;
+import com.floreantpos.model.KitchenReceiptVisibility;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.MenuCategory;
@@ -110,6 +111,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(Terminal.class);
 		configuration = configuration.addClass(Ticket.class);
 		configuration = configuration.addClass(KitchenTicket.class);
+		configuration = configuration.addClass(KitchenReceiptVisibility.class);
 		configuration = configuration.addClass(TicketCouponAndDiscount.class);
 		configuration = configuration.addClass(TicketItem.class);
 		configuration = configuration.addClass(TicketItemModifier.class);

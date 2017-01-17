@@ -28,6 +28,7 @@ public class POSConstants {
 	public static final String VOID_TICKET_BUTTON_TEXT = Messages.getString("VOID_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String REFUND_BUTTON_TEXT = Messages.getString("REFUND_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ASSIGN_DRIVER_BUTTON_TEXT = Messages.getString("ASSIGN_DRIVER_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String KITCHEN_RECEIPT_BUTTON_TEXT = Messages.getString("KITCHEN_RECEIPT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String CLOSE_ORDER_BUTTON_TEXT = Messages.getString("CLOSE_ORDER_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String MORE_ACTIVITY_BUTTON_TEXT = Messages.getString("MORE_ACTIVITY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String LESS_ACTIVITY_BUTTON_TEXT = Messages.getString("LESS_ACTIVITY_BUTTON_TEXT"); //$NON-NLS-1$
@@ -282,6 +283,8 @@ public class POSConstants {
 	public static final String QTY = Messages.getString("PosMessage.211"); //$NON-NLS-1$
 	public static final String CONFIRM_DELETE = Messages.getString("PosMessage.212"); //$NON-NLS-1$
 	public static final String GUEST_NO_BUTTON_TEXT = Messages.getString("GUEST_NO_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String ENABLE_KITCHEN_RECEIPT_BUTTON_TEXT = Messages.getString("ENABLE_KITCHEN_RECEIPT_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String DISABLE_KITCHEN_RECEIPT_BUTTON_TEXT = Messages.getString("DISABLE_KITCHEN_RECEIPT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String EMPTY_PASSWORD = Messages.getString("PosMessage.214"); //$NON-NLS-1$
 	public static final String TABLES = Messages.getString("PosMessage.215"); //$NON-NLS-1$
 	public static final String SWITCHBOARD = Messages.getString("PosMessage.216"); //$NON-NLS-1$

@@ -57,6 +57,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.DataUpdateInfoDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosBlinkButton;
@@ -108,6 +109,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		btnSettleTicket.addActionListener(this);
 		btnSplitTicket.addActionListener(this);
 		btnVoidTicket.setAction(new VoidTicketAction(this));
+		btnKitchenReceipt.addActionListener(this);
 
 		orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
 
@@ -248,6 +250,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		collapsiblePane.getContentPane().add(btnRefundTicket);
 		collapsiblePane.getContentPane().add(btnAssignDriver);
+		collapsiblePane.getContentPane().add(btnKitchenReceipt);
 
 		collapsiblePane.setCollapsed(true);
 		innerActivityPanel.add(collapsiblePane, "newline"); //$NON-NLS-1$
@@ -825,6 +828,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	private PosButton btnRefundTicket = new PosButton(POSConstants.REFUND_BUTTON_TEXT, new RefundAction(this));
 
 	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
+	private PosButton btnKitchenReceipt = new PosButton(POSConstants.KITCHEN_RECEIPT_BUTTON_TEXT);
 	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
 	private PosBlinkButton btnRefreshTicketList = new PosBlinkButton(Messages.getString(Messages.getString("SwitchboardView.21"))); //NON-NLS-1$ //$NON-NLS-1$
 
@@ -886,6 +890,16 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 		else if (source == btnSplitTicket) {
 			doSplitTicket();
+		}
+		else if (source == btnKitchenReceipt) {
+			List<Ticket> tickets = ticketList.getSelectedTickets();
+			if (tickets==null || tickets.size() == 0) {
+				POSMessageDialog.showMessage(this, Messages.getString("SwitchboardView.23")); //$NON-NLS-1$
+				return;
+			}
+			for(Ticket ticket : tickets){
+				ReceiptPrintService.reprintToKitchen(ticket);
+			}
 		}
 	}
 
