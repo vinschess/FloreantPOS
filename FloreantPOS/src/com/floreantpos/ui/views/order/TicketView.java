@@ -64,6 +64,8 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.SearchItemByNameDialog;
+import com.floreantpos.ui.dialog.SelectItemFromDropDownDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.ui.views.SwitchboardView;
@@ -758,6 +760,15 @@ public class TicketView extends JPanel {
 				kitchenReceiptVisibility.setEnable(1);
 				kitchenReceiptVisibilityDAO.save(kitchenReceiptVisibility);
 			}
+			
+			btnSearchItemByName = new PosButton(POSConstants.SEARCH_ITEM_BY_NAME_BUTTON_TEXT);
+			btnSearchItemByName.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					searchItemByName();
+				}
+			});
+			
 			if(kitchenReceiptVisibility.getEnable()==1){
 				btnEnableDisableKitchenReceipt.setText(com.floreantpos.POSConstants.DISABLE_KITCHEN_RECEIPT_BUTTON_TEXT);
 			}else{
@@ -823,6 +834,7 @@ public class TicketView extends JPanel {
 			buttonPanel.add(btnTableNumber);
 			buttonPanel.add(btnGuestNo);
 			buttonPanel.add(btnEnableDisableKitchenReceipt);
+			buttonPanel.add(btnSearchItemByName);
 
 			add(buttonPanel);
 		}// </editor-fold>//GEN-END:initComponents
@@ -991,6 +1003,7 @@ public class TicketView extends JPanel {
 		private com.floreantpos.swing.PosButton btnCustomer;
 		private com.floreantpos.swing.PosButton btnSearchItem;
 		private com.floreantpos.swing.PosButton btnEnableDisableKitchenReceipt;
+		private com.floreantpos.swing.PosButton btnSearchItemByName;
 		
 		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 		private PosButton btnDiscount = new PosButton("DISCOUNT");
@@ -1054,6 +1067,35 @@ public class TicketView extends JPanel {
 				POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
 				return;
 			}
+			itemSelectionListener.itemSelected(menuItem);
+		}
+		
+		public void searchItemByName() {
+			String itemName = SearchItemByNameDialog.takeIntInput("Enter or scan item name");
+
+			if (itemName==null || itemName.trim().equalsIgnoreCase("")) {
+				return;
+			}
+
+			List<MenuItem> menuItems = MenuItemDAO.getInstance().findMenuItems(itemName);
+			if (menuItems == null || menuItems.size()==0) {
+				POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
+				return;
+			}
+			
+			MenuItem menuItem = null;
+			if(menuItems.size()==1)
+				menuItem = menuItems.get(0);
+			else{
+				SelectItemFromDropDownDialog dialog = new SelectItemFromDropDownDialog(menuItems);
+				dialog.setSize(360, 240);
+				dialog.open();
+				if (!dialog.isCanceled()) {
+					menuItem = dialog.getFinalMenuItem();
+				}
+			}
+			
+			
 			itemSelectionListener.itemSelected(menuItem);
 		}
 	}

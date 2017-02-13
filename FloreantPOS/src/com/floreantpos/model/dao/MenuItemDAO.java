@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -63,6 +64,25 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			return criteria.list();
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new PosException("Error occured while finding food items");
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
+	public List<MenuItem> findMenuItems(String itemName) throws PosException {
+		Session session = null;
+		
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName, MatchMode.ANYWHERE));
+			criteria.addOrder(Order.asc(MenuItem.PROP_NAME));
+			
+			return criteria.list();
+		} catch (Exception e) {
 			throw new PosException("Error occured while finding food items");
 		} finally {
 			if (session != null) {

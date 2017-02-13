@@ -10,6 +10,7 @@ public class POSConstants {
 	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
 	
 	public static final String SEARCH_ITEM_BUTTON_TEXT = Messages.getString("SEARCH_ITEM_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String SEARCH_ITEM_BY_NAME_BUTTON_TEXT = Messages.getString("SEARCH_ITEM_BY_NAME_BUTTON_TEXT"); //$NON-NLS-1$
 	
 	public static final String CashierSwitchBoardView_LABEL_ORDER = Messages.getString("CashierSwitchBoardView.LABEL_ORDER"); //$NON-NLS-1$
 	
