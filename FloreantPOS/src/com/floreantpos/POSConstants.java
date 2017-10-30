@@ -235,6 +235,7 @@ public class POSConstants {
 	public static final String DRAWER_BLEED = Messages.getString("PosMessage.166"); //$NON-NLS-1$
 	public static final String FIRST_NAME = Messages.getString("PosMessage.167"); //$NON-NLS-1$
 	public static final String EDIT_MENU_ITEM = Messages.getString("PosMessage.168"); //$NON-NLS-1$
+	public static final String COPY_MENU_ITEM = Messages.getString("PosMessage.168.1"); //$NON-NLS-1$
 	public static final String COUPON_DISCOUNT = Messages.getString("PosMessage.169"); //$NON-NLS-1$
 	public static final String ADD_GRATUITY_TEXT = Messages.getString("ADD_GRATUITY_TEXT"); //$NON-NLS-1$
 	public static final String PRINT_ERROR = Messages.getString("PosMessage.170"); //$NON-NLS-1$

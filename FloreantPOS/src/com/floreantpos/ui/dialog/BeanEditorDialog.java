@@ -36,6 +36,16 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		addWindowListener(this);
 	}
+	
+	public BeanEditorDialog(BeanEditor beanEditor, String title) {
+		super(POSUtil.getFocusedWindow(), ModalityType.APPLICATION_MODAL);
+		initComponents();
+
+		setBeanEditor(beanEditor);
+		setTitle(title);
+
+		addWindowListener(this);
+	}
 
 
 	/** This method is called from within the constructor to

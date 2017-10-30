@@ -16,7 +16,7 @@ import com.floreantpos.swing.TransparentPanel;
  */
 public class ExplorerButtonPanel extends TransparentPanel {
 
-	private JButton editButton, addButton, deleteButton;
+	private JButton editButton, addButton, deleteButton, copyButton;
 
 	/** Creates new form ExplorerButtonPanel */
 	public ExplorerButtonPanel() {
@@ -35,10 +35,12 @@ public class ExplorerButtonPanel extends TransparentPanel {
 		editButton = new JButton();
 		addButton = new JButton();
 		deleteButton =new JButton();
+		copyButton =new JButton();
 
 		editButton.setText(com.floreantpos.POSConstants.EDIT);
 		addButton.setText(com.floreantpos.POSConstants.ADD);
 		deleteButton.setText(com.floreantpos.POSConstants.DELETE);
+		copyButton.setText(com.floreantpos.POSConstants.COPY);
 	}
 
 	public JButton getAddButton() {
@@ -52,6 +54,12 @@ public class ExplorerButtonPanel extends TransparentPanel {
 	public JButton getEditButton() {
 		return editButton;
 	}
+
+	public JButton getCopyButton() {
+		return copyButton;
+	}
+	
+	
 
 	// </editor-fold>    
 	
