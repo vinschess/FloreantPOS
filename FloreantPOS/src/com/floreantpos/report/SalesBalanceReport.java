@@ -296,7 +296,7 @@ public class SalesBalanceReport {
 
 	public void calculate() {
 		netSalesAmount = (grossTaxableSalesAmount + grossNonTaxableSalesAmount) - discountAmount;
-		totalRevenueAmount = netSalesAmount + salesTaxAmount;
+		totalRevenueAmount = netSalesAmount; //+ salesTaxAmount;
 		grossReceiptsAmount = totalRevenueAmount + payInsAmount + chargedTipsAmount;
 		receiptDiffAmount = grossReceiptsAmount - cashReceiptsAmount - creditCardReceiptsAmount 
 						- arReceiptsAmount/* - giftCertReturnAmount + giftCertChangeAmount*/

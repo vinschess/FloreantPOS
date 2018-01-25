@@ -2,3 +2,5 @@
 /target/
 /derby.log
 /floreantpos.config.properties
+/.metadata/
+/logs/
